@@ -1,16 +1,11 @@
 " auto save view {{{
-" augroup AutoSaveView
-"     autocmd!
-"     autocmd BufWinLeave *.* mkview!
-"     autocmd BufWinEnter *.* silent! loadview
-" augroup END
 
 " stolen from vim.wiki http://vim.wikia.com/wiki/Make_views_automatic
 let g:skipview_files = [
             \ '[EXAMPLE PLUGIN BUFFER]'
             \ ]
 
-function! g:MakeViewCheck()
+function! MakeFileCheck()
     if has('quickfix') && &buftype =~ 'nofile'
         " Buffer is marked as not a file
         return 0
