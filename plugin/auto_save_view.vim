@@ -5,7 +5,7 @@ let g:skipview_files = [
             \ '[EXAMPLE PLUGIN BUFFER]'
             \ ]
 
-function! MakeFileCheck()
+function NotInternalBuffer()
     if has('quickfix') && &buftype =~ 'nofile'
         " Buffer is marked as not a file
         return 0
@@ -27,16 +27,16 @@ function! MakeFileCheck()
         return 0
     endif
     " i added
-    if exists('g:this_obsession')
-        " using t-pops obsession
-        return 0
-    endif
     if &filetype == 'help'
         " this is a help file
         return 0
     endif
     if &filetype == 'gitcommit'
         " gitcommit
+        return 0
+    endif
+    if exists('g:this_obsession')
+        " using t-pops obsession
         return 0
     endif
     return 1
