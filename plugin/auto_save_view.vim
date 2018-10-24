@@ -5,7 +5,7 @@ let g:skipview_files = [
             \ '[EXAMPLE PLUGIN BUFFER]'
             \ ]
 
-function NotInternalBuffer()
+function NotInternalBuffer!()
     if has('quickfix') && &buftype =~ 'nofile'
         " Buffer is marked as not a file
         return 0
