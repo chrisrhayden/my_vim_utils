@@ -1,4 +1,5 @@
-" relativenumber {{{
+let g:my_auto_toggle_relnum=  get(g:, 'my_auto_toggle_relnum', 1)
+
 " from reddit
 " https://redd.it/7iy03o
 function! Relativize(v)
@@ -14,5 +15,3 @@ augroup RelativizeAu
   autocmd BufWinEnter,FocusGained,InsertLeave,WinEnter * call Relativize(1)
   autocmd BufWinLeave,FocusLost,InsertEnter,WinLeave * call Relativize(0)
 augroup END
-" }}}
-
