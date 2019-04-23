@@ -1,4 +1,7 @@
 " auto save view {{{
+if !exists('&my_auto_save_view')
+  let g:my_auto_save_view = 0
+endif
 
 " stolen from vim.wiki http://vim.wikia.com/wiki/Make_views_automatic
 let g:skipview_files = [
