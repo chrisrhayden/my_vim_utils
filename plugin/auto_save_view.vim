@@ -42,13 +42,14 @@ function! NotInternalBuffer()
     return 1
 endfunction
 
-augroup AutoSaveView
-    autocmd!
-    " Autosave & Load Views.
-    autocmd BufWritePost,BufLeave,WinLeave ?*
-          \ if NotInternalBuffer() | mkview | endif
-    autocmd BufWinEnter ?*
-          \ if NotInternalBuffer() | silent! loadview | endif
-augroup end
-
-" }}}
+if g:my_auto_save_view
+  augroup AutoSaveView
+      autocmd!
+      " Autosave & Load Views.
+      autocmd BufWritePost,BufLeave,WinLeave ?*
+            \ if NotInternalBuffer() | mkview | endif
+      autocmd BufWinEnter ?*
+            \ if NotInternalBuffer() | silent! loadview | endif
+  augroup end
+endif
+  " }}}

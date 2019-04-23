@@ -9,7 +9,7 @@ function! Relativize(v)
   endif
 endfunction
 
-if g:auto_toggle_relnum
+if g:my_auto_toggle_relnum
   augroup relativize
     autocmd!
     " autocmd InsertLeave * call Relativize(1)
