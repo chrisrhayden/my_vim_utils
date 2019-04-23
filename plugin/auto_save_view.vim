@@ -1,7 +1,5 @@
 " auto save view {{{
-if !exists('&my_auto_save_view')
-  let g:my_auto_save_view = 0
-endif
+let g:my_auto_save_view = get(g:, 'my_auto_save_view', 0)
 
 " stolen from vim.wiki http://vim.wikia.com/wiki/Make_views_automatic
 let g:skipview_files = [
@@ -46,23 +44,21 @@ function! NotInternalBuffer()
 endfunction
 
 function! MakeAutoView()
-  if NotInternalBuffer() && g:auto_save_view
+  if NotInternalBuffer() && g:my_auto_save_view
     mkview
   endif
 endfunction
 
 function! LoadAutoView()
-  if NotInternalBuffer() && g:auto_save_view
+  if NotInternalBuffer() && g:my_auto_save_view
       silent! loadview
   endif
 endfunction
 
-if g:my_auto_save_view
-  augroup AutoSaveView
-      autocmd!
-      " Autosave & Load Views.
-      autocmd BufWritePost,BufLeave,WinLeave ?* MakeAutoView()
-      autocmd BufWinEnter ?* LoadAutoView
-  augroup end
-endif
-  " }}}
+augroup AutoSaveView
+    autocmd!
+    " Autosave & Load Views.
+    autocmd BufWritePost,BufLeave,WinLeave ?* call MakeAutoView()
+    autocmd BufWinEnter ?* call LoadAutoView()
+augroup end
+" }}}
