@@ -1,9 +1,7 @@
-let g:my_auto_toggle_relnum=  get(g:, 'my_auto_toggle_relnum', 1)
-
 " from reddit
 " https://redd.it/7iy03o
 function! Relativize(v)
-  if &number && g:my_auto_toggle_relnum == 1
+  if &number
     let &relativenumber = a:v
   endif
 endfunction
