@@ -1,3 +1,8 @@
+if exists('g:loaded_auto_save')
+  finish
+end
+let g:loaded_auto_save = 1
+
 " auto save view {{{
 
 " stolen from vim.wiki http://vim.wikia.com/wiki/Make_views_automatic

@@ -1,3 +1,8 @@
+if exists('g:loaded_toggle_relnum')
+  finis
+end
+let g:loaded_toggle_relnum = 1
+
 " from reddit
 " https://redd.it/7iy03o
 function! Relativize(v)
