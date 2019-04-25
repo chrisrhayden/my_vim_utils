@@ -42,3 +42,11 @@ function! s:transpose() abort
   return pre . "\<BS>\<Right>".matchstr(getcmdline()[0 : pos-2], '.$')
 endfunction
 " }}}
+
+
+function ClosePrev()
+  if pumvisible() == 0
+    pclose
+  endif
+endfunction
+"""""""""""""""""""""""""""""""""""""""""
