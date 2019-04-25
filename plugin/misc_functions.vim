@@ -5,7 +5,7 @@ let g:loaded_my_utils = 1
 
 
 " Preserve {{{
-function! Preserve(command)
+function Preserve(command)
   " http://vimcasts.org/episodes/tidying-whitespace/
   " Preparation: save last search, and cursor position.
   " @/ = from the registry named /
@@ -26,7 +26,7 @@ endfunction
 
 " transpose {{{
 " from https://github.com/tpope/vim-rsi
-function! s:transpose() abort
+function Transpose() abort
   let pos = getcmdpos()
   if getcmdtype() =~# '[?/]'
     return "\<C-T>"
@@ -43,10 +43,11 @@ function! s:transpose() abort
 endfunction
 " }}}
 
-
+" close previous {{{
+"""""""""""""""""""""""""""""""""""""""""
 function ClosePrev()
   if pumvisible() == 0
     pclose
   endif
 endfunction
-"""""""""""""""""""""""""""""""""""""""""
+" }}}

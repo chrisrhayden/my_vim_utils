@@ -5,7 +5,7 @@ let g:loaded_toggle_relnum = 1
 
 " from reddit
 " https://redd.it/7iy03o
-function! Relativize(v)
+function Relativize(v)
   if &number
     let &relativenumber = a:v
   endif
