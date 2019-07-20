@@ -1,5 +1,5 @@
 if exists('g:loaded_toggle_relnum')
-  finis
+  finish
 end
 let g:loaded_toggle_relnum = 1
 
@@ -18,6 +18,7 @@ augroup RelativizeAu
   autocmd!
   autocmd InsertLeave * call Relativize(1)
   autocmd InsertEnter * call Relativize(0)
-  " autocmd BufWinEnter,FocusGained,InsertLeave,WinEnter * call Relativize(1)
-  " autocmd BufWinLeave,FocusLost,InsertEnter,WinLeave * call Relativize(0)
 augroup END
+
+" autocmd BufWinEnter,FocusGained,InsertLeave,WinEnter * call Relativize(1)
+" autocmd BufWinLeave,FocusLost,InsertEnter,WinLeave * call Relativize(0)
