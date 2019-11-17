@@ -96,7 +96,7 @@ endfunction
 " }}}
 
 " s:FunctionSignaturesDisplay {{{
-function tagutils#FunctionSignatures(...) abort
+function s:FunctionSignatures(...) abort
   if a:0 > 1
     let l:output = s:MakeFunctionSignatures(join(a:000[1:],  ' '))
   else
