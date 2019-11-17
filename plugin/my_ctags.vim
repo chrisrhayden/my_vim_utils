@@ -7,7 +7,7 @@ function s:MakeFunctionSignatures(tag_paths) abort
   let l:ctags_arg = '--_xformat="%t %N%S" '
   let l:ctags_str = 'ctags -x --c++-types=f ' . l:ctags_arg . a:tag_paths
   let l:ctags_output = systemlist(l:ctags_str)
-  let l:ctags_output = filter(l:ctags_output, 'v:val !~ ".*main(.*)"')
+  let l:ctags_output = filter(l:ctags_output, 'v:val !~ ".* main(.*)"')
 
   let l:output = systemlist('cut -d":" -f2-', l:ctags_output)
   map(l:output, {_, line -> line . ';'})
