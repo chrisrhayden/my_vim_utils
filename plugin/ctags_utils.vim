@@ -116,5 +116,8 @@ command -complete=file -nargs=* Signatures
 command -complete=file -nargs=* SignaturesRead
       \ :call FunctionSignatures('append', <f-args>)
 
-nnoremap <buffer> gO :call FunctionSignatures('display')<cr>
+augroup CtagsUtils
+  autocmd!
+  autocmd! FileType cpp,c :nnoremap <buffer> gO :call FunctionSignatures('display')<cr>
+augroup END
 " }}}
