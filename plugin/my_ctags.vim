@@ -8,20 +8,32 @@ function s:MakeFunctionSignatures(tag_paths) abort
   let l:ctags_str = 'ctags -x --c++-types=f ' . l:ctags_arg . a:tag_paths
   let l:ctags_output = system(l:ctags_str)
 
-  " map the awk list to a dictionary
+  let l:output = systemlist('cut -d":" -f2-', l:ctags_output)
+  let l:thing = map(l:output, {_, line -> line . ';'})
+
   return l:output
 endfunction
 
-function s:FunctionSignatures() abort
+function s:FunctionSignaturesDisplay(...) abort
   if a:0
     let l:output = s:MakeFunctionSignatures(join(a:000,  ' '))
   else
     let l:output = s:MakeFunctionSignatures(expand('%'))
   endif
 
-  call setloclist(0, map(l:output, { _, line -> {'text': line }}))
+  execute 'keepalt botright split ' . '[function prototypes]'
+  execute 'resize -10'
 
-  lopen
+  setlocal filetype=cpp
+  call append(line('$') - 1, l:output)
+
+  setlocal noreadonly " in case the "view" mode is used
+  setlocal buftype=nofile
+  setlocal bufhidden=hide
+  setlocal noswapfile
+  setlocal nobuflisted
+  setlocal nomodifiable
+  setlocal textwidth=0
 endfunction
 
 function s:FunctionSignaturesRead() abort
@@ -34,5 +46,5 @@ function s:FunctionSignaturesRead() abort
   call append(line('.'), l:output)
 endfunction
 
-command -complete=file -nargs=* Signatures :call <sid>FunctionSignatures()
+command -complete=file -nargs=* Signatures :call <sid>FunctionSignaturesDisplay()
 command -complete=file -nargs=* SignaturesRead :call <sid>FunctionSignaturesRead()
