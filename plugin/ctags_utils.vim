@@ -96,7 +96,7 @@ endfunction
 " }}}
 
 " s:FunctionSignaturesDisplay {{{
-function s:FunctionSignatures(...) abort
+function FunctionSignatures(...) abort
   if a:0 > 1
     let l:output = s:MakeFunctionSignatures(join(a:000[1:],  ' '))
   else
@@ -113,12 +113,17 @@ endfunction
 augroup CtagsUtils
   autocmd!
 
-  autocmd BufNewFile,BufRead *.cpp,*.c
+  autocmd FileType cpp,c
         \ command -complete=file -nargs=* Signatures
-        \ :call <sid>FunctionSignatures('display', <f-args>)
+        \ :call FunctionSignatures('display', <f-args>)
 
-  autocmd BufNewFile,BufRead *.cpp,*.c
+  autocmd FileType cpp,c
         \ command -complete=file -nargs=* SignaturesRead
-        \ :call <sid>FunctionSignatures('append', <f-args>)
+        \ :call FunctionSignatures('append', <f-args>)
+
+  autocmd! FileType cpp,c
+        \ :nnoremap <buffer> gO
+        \ :call FunctionSignatures('display')<cr>
+
 augroup END
 " }}}
