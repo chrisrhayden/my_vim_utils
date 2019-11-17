@@ -79,15 +79,11 @@ function s:HandleWindow(output) abort
     execute 'keepalt botright split ' . l:buf_name
     resize -10
 
-    setlocal modifiable
-
     if l:buff_nr == -1
       call s:InitBuffer()
     endif
 
     call s:AppendLines(a:output)
-
-    setlocal nomodifiable
   else
     if win_gotoid(win_getid(l:win_buff_nr)) == 1
       call s:AppendLines(a:output)
