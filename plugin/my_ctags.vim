@@ -3,14 +3,20 @@ if exists('g:loaded_my_ctags')
 end
 let g:loaded_my_ctags = 1
 
+function MakePrototype(str_num, str_val) abort
+  if match(a:str_val, '.* main(.*)') == -1
+    return substitute(a:str_val, '\w\+:\(.*\)', '\1;', 'g')
+  else
+    return ''
+  endif
+endfunction
+
 function s:MakeFunctionSignatures(tag_paths) abort
   let l:ctags_arg = '--_xformat="%t %N%S" '
   let l:ctags_str = 'ctags -x --c++-types=f ' . l:ctags_arg . a:tag_paths
   let l:ctags_output = systemlist(l:ctags_str)
   let l:ctags_output = filter(l:ctags_output, 'v:val !~ ".* main(.*)"')
-
-  let l:output = systemlist('cut -d":" -f2-', l:ctags_output)
-  map(l:output, {_, line -> line . ';'})
+  let l:output = map(l:ctags_output, function('MakePrototype'))
 
   return l:output
 endfunction
@@ -21,6 +27,8 @@ function s:FunctionSignaturesDisplay(...) abort
   else
     let l:output = s:MakeFunctionSignatures(expand('%'))
   endif
+
+  let l:prev_win = win_getid()
 
   execute 'keepalt botright split ' . '[function prototypes]'
   execute 'resize -10'
@@ -35,6 +43,8 @@ function s:FunctionSignaturesDisplay(...) abort
   setlocal nobuflisted
   setlocal nomodifiable
   setlocal textwidth=0
+
+  call win_gotoid(l:prev_win)
 endfunction
 
 function s:FunctionSignaturesRead() abort
