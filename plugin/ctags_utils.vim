@@ -113,15 +113,15 @@ endfunction
 augroup CtagsUtils
   autocmd!
 
-  autocmd FileType cpp,c
+  autocmd FileType cpp,c,h
         \ command -complete=file -nargs=* Signatures
         \ :call FunctionSignatures('display', <f-args>)
 
-  autocmd FileType cpp,c
+  autocmd FileType cpp,c,h
         \ command -complete=file -nargs=* SignaturesRead
         \ :call FunctionSignatures('append', <f-args>)
 
-  autocmd! FileType cpp,c
+  autocmd! FileType cpp,c,h
         \ :nnoremap <buffer> gO
         \ :call FunctionSignatures('display')<cr>
 
