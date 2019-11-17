@@ -95,7 +95,7 @@ function s:HandleWindow(output) abort
 endfunction
 " }}}
 
-" s:FunctionSignaturesDisplay {{{
+" FunctionSignaturesDisplay {{{
 function FunctionSignatures(...) abort
   if a:0 > 1
     let l:output = s:MakeFunctionSignatures(join(a:000[1:],  ' '))
@@ -110,20 +110,11 @@ function FunctionSignatures(...) abort
   endif
 endfunction
 
-augroup CtagsUtils
-  autocmd!
+command -complete=file -nargs=* Signatures
+      \ :call FunctionSignatures('display', <f-args>)
 
-  autocmd FileType cpp,c,h
-        \ command -complete=file -nargs=* Signatures
-        \ :call FunctionSignatures('display', <f-args>)
+command -complete=file -nargs=* SignaturesRead
+      \ :call FunctionSignatures('append', <f-args>)
 
-  autocmd FileType cpp,c,h
-        \ command -complete=file -nargs=* SignaturesRead
-        \ :call FunctionSignatures('append', <f-args>)
-
-  autocmd! FileType cpp,c,h
-        \ :nnoremap <buffer> gO
-        \ :call FunctionSignatures('display')<cr>
-
-augroup END
+nnoremap <buffer> gO :call FunctionSignatures('display')<cr>
 " }}}
