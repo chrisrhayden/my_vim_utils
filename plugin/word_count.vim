@@ -1,5 +1,5 @@
 function WordCountFun() abort
-  w !wc
+  write !wc
 endfunction
 
 command WordCount call WordCountFun()
