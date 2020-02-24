@@ -1,9 +1,10 @@
+" use ctags to get function prototypes
 if exists('g:loaded_my_ctags')
   finish
 end
 let g:loaded_my_ctags = 1
 
-" MakePrototype {{{
+" transform the best ctags output we get to a usable prototype
 function MakePrototype(num, str_val) abort
   " TODO: probably could do this with string indexing or something
   " remove the typename: from ctags output
@@ -11,10 +12,11 @@ function MakePrototype(num, str_val) abort
 
   " add a space for every comma
   return substitute(l:interm, ',', ', ', 'g')
-endfunction
-" }}}
 
-" s:MakeFunctionSignatures {{{
+  unlet l:interm
+endfunction
+
+" get function signatures with ctags
 function s:MakeFunctionSignatures(tag_paths) abort
   " variables to keep the cmd string small
   let l:ctags_arg = '--_xformat="%t %N%S" '
@@ -24,11 +26,11 @@ function s:MakeFunctionSignatures(tag_paths) abort
   let l:output = systemlist(l:ctags_str)
   " map the output to MakePrototype() and filter main()
   return filter(map(l:output, function('MakePrototype')), 'v:val !~ ".* main(.*).*"')
-endfunction
-" }}}
 
-" s:InitBuffer {{{
-" set the desired options locally
+  unlet l:ctags_str l:ctags_arg l:output
+endfunction
+
+" set the desired options for the Signatures buffer
 function s:InitBuffer() abort
   setlocal filetype=cpp
   setlocal noreadonly " in case the 'view' mode is used
@@ -42,9 +44,8 @@ function s:InitBuffer() abort
   setlocal nolist
   setlocal nospell
 endfunction
-" }}}
 
-" s:AppendLines {{{
+" add string to a buffer
 function s:AppendLines(to_append) abort
   " set modifiable just in case
   setlocal modifiable
@@ -64,9 +65,8 @@ function s:AppendLines(to_append) abort
   " freeze buffer
   setlocal nomodifiable
 endfunction
-" }}}
 
-" s:HandleWindow {{{
+" the Signatures window
 function s:HandleWindow(output) abort
   let l:buf_name = 'function_prototypes'
 
@@ -92,10 +92,11 @@ function s:HandleWindow(output) abort
   endif
 
   call win_gotoid(l:prev_win_id)
-endfunction
-" }}}
 
-" FunctionSignaturesDisplay {{{
+  unlet l:buf_name l:buff_nr l:prev_win_id l:win_buff_nr
+endfunction
+
+" ether read in prototypes to a buffer or the file (at cursor)
 function FunctionSignatures(...) abort
   if a:0 > 1
     let l:output = s:MakeFunctionSignatures(join(a:000[1:],  ' '))
@@ -108,16 +109,23 @@ function FunctionSignatures(...) abort
   else
     call s:HandleWindow(l:output)
   endif
+
+  unlet l:output
 endfunction
 
+" open a window with prototypes
 command -complete=file -nargs=* Signatures
       \ :call FunctionSignatures('display', <f-args>)
 
+" read prototypes in to file
 command -complete=file -nargs=* SignaturesRead
       \ :call FunctionSignatures('append', <f-args>)
 
+" add table of contents binding
 augroup CtagsUtils
   autocmd!
   autocmd! FileType cpp,c :nnoremap <buffer> gO :call FunctionSignatures('display')<cr>
 augroup END
 " }}}
+
+" vim: foldmethod=indent
