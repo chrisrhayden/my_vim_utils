@@ -1,4 +1,4 @@
-function WordCountFun() abort
+function WordCountFun()
   write !wc
 endfunction
 
