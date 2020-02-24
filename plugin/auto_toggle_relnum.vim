@@ -4,6 +4,9 @@ if exists('g:loaded_toggle_relnum')
 end
 let g:loaded_toggle_relnum = 1
 
+set number
+set relativenumber
+
 " stolen from
 " https://github.com/jeffkreeftmeijer/vim-numbertoggle/
 
