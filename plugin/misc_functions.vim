@@ -1,25 +1,28 @@
+" keep functions i dont want to mess or see in my rc with here
 if exists('g:loaded_my_utils')
   finish
 endif
 let g:loaded_my_utils = 1
 
-
-" Preserve {{{
+" Peserve {{{
 function Preserve(command)
   " http://vimcasts.org/episodes/tidying-whitespace/
   " Preparation: save last search, and cursor position.
   " @/ = from the registry named /
-  let save_hist=@/
+  let l:save_hist=@/
 
 
-  let save_line = line(".")
-  let save_column = col(".")
+  let l:save_line = line(".")
+  let l:save_column = col(".")
   " Do the business:
-  "
+
   execute a:command
   " Clean up: restore previous search history, and cursor position
-  let @/=save_hist
+  let @/=l:save_hist
+
   call cursor(save_line, save_column)
+
+  unlet l:save_hist l:save_line l:save_column
 endfunction
 
 " }}}
@@ -40,14 +43,5 @@ function Transpose() abort
     let pre = ""
   endif
   return pre . "\<BS>\<Right>".matchstr(getcmdline()[0 : pos-2], '.$')
-endfunction
-" }}}
-
-" close previous {{{
-"""""""""""""""""""""""""""""""""""""""""
-function ClosePrev()
-  if pumvisible() == 0
-    pclose
-  endif
 endfunction
 " }}}
