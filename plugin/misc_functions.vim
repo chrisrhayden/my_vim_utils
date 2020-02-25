@@ -21,8 +21,6 @@ function Preserve(command)
   let @/=l:save_hist
 
   call cursor(save_line, save_column)
-
-  unlet l:save_hist l:save_line l:save_column
 endfunction
 
 " }}}

@@ -12,8 +12,6 @@ function MakePrototype(num, str_val) abort
 
   " add a space for every comma
   return substitute(l:interm, ',', ', ', 'g')
-
-  unlet l:interm
 endfunction
 
 " get function signatures with ctags
@@ -26,8 +24,6 @@ function s:MakeFunctionSignatures(tag_paths) abort
   let l:output = systemlist(l:ctags_str)
   " map the output to MakePrototype() and filter main()
   return filter(map(l:output, function('MakePrototype')), 'v:val !~ ".* main(.*).*"')
-
-  unlet l:ctags_str l:ctags_arg l:output
 endfunction
 
 " set the desired options for the Signatures buffer
@@ -92,8 +88,6 @@ function s:HandleWindow(output) abort
   endif
 
   call win_gotoid(l:prev_win_id)
-
-  unlet l:buf_name l:buff_nr l:prev_win_id l:win_buff_nr
 endfunction
 
 " ether read in prototypes to a buffer or the file (at cursor)
@@ -109,8 +103,6 @@ function FunctionSignatures(...) abort
   else
     call s:HandleWindow(l:output)
   endif
-
-  unlet l:output
 endfunction
 
 " open a window with prototypes
