@@ -4,6 +4,7 @@ if exists('g:loaded_toggle_relnum')
 end
 let g:loaded_toggle_relnum = 1
 
+" initial set up as the plugin should do everything I guess
 set number
 set relativenumber
 
