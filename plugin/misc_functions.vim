@@ -26,6 +26,7 @@ endfunction
 " }}}
 
 " transpose {{{
+" this is for my rsi bindings if I dont have plugins
 " from https://github.com/tpope/vim-rsi
 function Transpose() abort
   let pos = getcmdpos()
@@ -42,4 +43,10 @@ function Transpose() abort
   endif
   return pre . "\<BS>\<Right>".matchstr(getcmdline()[0 : pos-2], '.$')
 endfunction
+" }}}
+
+" clear whitespace {{{
+command ClearWhitespace :call Preserve('%s/\s\+$//e')
+
+nnoremap <leader>cw :ClearWhitespace :nohlsearch<CR>
 " }}}
