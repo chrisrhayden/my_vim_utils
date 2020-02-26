@@ -48,5 +48,5 @@ endfunction
 " clear whitespace {{{
 command ClearWhitespace :call Preserve('%s/\s\+$//e')
 
-nnoremap <leader>cw :ClearWhitespace :nohlsearch<CR>
+nnoremap <leader>cw :ClearWhitespace<cr>:nohlsearch<CR>
 " }}}
