@@ -25,26 +25,6 @@ endfunction
 
 " }}}
 
-" transpose {{{
-" this is for my rsi bindings if I dont have plugins
-" from https://github.com/tpope/vim-rsi
-function Transpose() abort
-  let pos = getcmdpos()
-  if getcmdtype() =~# '[?/]'
-    return "\<C-T>"
-  elseif pos > strlen(getcmdline())
-    let pre = "\<Left>"
-    let pos -= 1
-  elseif pos <= 1
-    let pre = "\<Right>"
-    let pos += 1
-  else
-    let pre = ""
-  endif
-  return pre . "\<BS>\<Right>".matchstr(getcmdline()[0 : pos-2], '.$')
-endfunction
-" }}}
-
 " clear whitespace {{{
 command ClearWhitespace :call Preserve('%s/\s\+$//e')
 
