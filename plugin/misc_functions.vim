@@ -4,7 +4,7 @@ if exists('g:loaded_my_utils')
 endif
 let g:loaded_my_utils = 1
 
-" Peserve {{{
+" Preserve {{{
 function Preserve(command)
   " http://vimcasts.org/episodes/tidying-whitespace/
   " Preparation: save last search, and cursor position.
@@ -29,4 +29,12 @@ endfunction
 command ClearWhitespace :call Preserve('%s/\s\+$//e')
 
 nnoremap <leader>cw :ClearWhitespace<cr>:nohlsearch<CR>
+" }}}
+
+" overwrite <c-g> to print the full file path {{{
+function MyFilePath() abort
+  echo expand('%:p') . ' [' . line('.') . ' - ' . line('$') . ' lines]'
+endfunction
+
+nnoremap <c-g> :call MyFilePath()<cr>
 " }}}
