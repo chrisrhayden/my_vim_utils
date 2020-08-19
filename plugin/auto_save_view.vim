@@ -53,7 +53,7 @@ augroup AutoSaveView
     autocmd!
     " Autosave & Load Views.
     autocmd BufWritePost,BufLeave,WinLeave,InsertLeave ?*
-          \ if NotInternalBuffer() | mkview | endif
+          \ if NotInternalBuffer() | silent! mkview | endif
 
     autocmd BufWinEnter ?* if NotInternalBuffer() | silent! loadview | endif
 augroup end
