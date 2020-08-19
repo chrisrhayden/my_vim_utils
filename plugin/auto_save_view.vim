@@ -49,5 +49,6 @@ augroup AutoSaveView
     autocmd BufWritePost,BufLeave,WinLeave,InsertLeave ?*
           \ if SpecialBuffer() == v:false | mkview | endif
 
-    autocmd BufWinEnter ?* if SpecialBuffer()  == v:false | loadview | endif
+    autocmd BufWinEnter ?*
+          \ if SpecialBuffer()  == v:false | silent! loadview | endif
 augroup end
