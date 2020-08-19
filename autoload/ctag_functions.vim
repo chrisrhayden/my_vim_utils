@@ -28,7 +28,8 @@ endfunction
 " set the desired options for the Signatures buffer
 function s:InitBuffer() abort
   setlocal filetype=cpp
-  setlocal noreadonly " in case the 'view' mode is used
+  " in case the 'view' mode is used
+  setlocal noreadonly
   setlocal buftype=nofile
   setlocal bufhidden=hide
   setlocal noswapfile
