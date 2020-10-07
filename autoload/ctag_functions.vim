@@ -22,6 +22,7 @@ function s:MakeFunctionSignatures(tag_paths) abort
   " run the command
   let l:output = systemlist(l:ctags_str)
   " map the output to MakePrototype() and filter main()
+  " map() needs a `Funcref` so we use the __function()__ function
   return filter(map(l:output, function('MakePrototype')), 'v:val !~ ".* main(.*).*"')
 endfunction
 
