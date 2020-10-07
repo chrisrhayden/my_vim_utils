@@ -21,4 +21,3 @@ function Preserve(command)
 
   call cursor(save_line, save_column)
 endfunction
-
