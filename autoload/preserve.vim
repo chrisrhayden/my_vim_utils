@@ -3,7 +3,7 @@ if exists('g:loaded_my_preserve')
 end
 let g:loaded_my_preserve = 1
 
-function preserve#Preserve(command)
+function preserve#Preserve(cmd)
   " http://vimcasts.org/episodes/tidying-whitespace/
   " Preparation: save last search, and cursor position.
   " @/ = from the registry named /
@@ -13,8 +13,8 @@ function preserve#Preserve(command)
   let l:save_line = line(".")
   let l:save_column = col(".")
 
-  " Do the business:
-  execute a:command
+  execute a:cmd
+
 
   " Clean up: restore previous search history, and cursor position
   let @/=l:save_hist
