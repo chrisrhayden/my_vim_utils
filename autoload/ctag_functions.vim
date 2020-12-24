@@ -3,24 +3,35 @@ if exists('g:loaded_my_ctag_functions')
 end
 let g:loaded_my_ctag_functions = 1
 
-" transform the best ctags output we get to a usable prototype
+" a wrapper function to call in map
+" NOTE: the main and other functions could be filtered here for speed
 function MakePrototype(num, str_val) abort
-  " TODO: probably could do this with string indexing or something
-  " remove the typename: from ctags output
-  let l:interm = substitute(a:str_val, '\w\+:\(.*\)', '\1;', 'g')
-
-  " add a space for every comma
-  return substitute(l:interm, ',', ', ', 'g')
+  " remove the trailing space ` ` and maybe `{` and add a `;`
+  return substitute(a:str_val, ' \?{\?$', ';', 'g')
 endfunction
 
 " get function signatures with ctags
 function s:MakeFunctionSignatures(tag_paths) abort
-  " variables to keep the cmd string small
-  let l:ctags_arg = '--_xformat="%t %N%S" '
-  let l:ctags_str = 'ctags -x --c++-types=f ' . l:ctags_arg . a:tag_paths
+  let l:langs_to_use = ['c', 'cpp']
+  let l:lang_indx = index(l:langs_to_use, &filetype)
+
+  if l:lang_indx == 0
+    let l:lang_opts = '--kinds-C=f '
+  elseif l:lang_indx == 1
+    let l:lang_opts = '--kinds-C++=f '
+  else
+    echomsg 'not a c/c++ file'
+    return
+  endif
+
+  " --_xformat is not documented in the man page
+  " https://docs.ctags.io/en/latest/news.html#customizing-xref-output
+  " see `ctags --list-fields` for format options
+  let l:ctags_str = 'ctags -x --_xformat="%C" ' . l:lang_opts . a:tag_paths
 
   " run the command
   let l:output = systemlist(l:ctags_str)
+
   " map the output to MakePrototype() and filter main()
   " map() needs a `Funcref` so we use the __function()__ function
   return filter(map(l:output, function('MakePrototype')), 'v:val !~ ".* main(.*).*"')
@@ -29,7 +40,7 @@ endfunction
 " set the desired options for the Signatures buffer
 function s:InitBuffer() abort
   setlocal filetype=cpp
-  " in case the 'view' mode is used
+  " in case the 'view' mode is used so we can add to the buffer
   setlocal noreadonly
   setlocal buftype=nofile
   setlocal bufhidden=hide
@@ -43,8 +54,8 @@ function s:InitBuffer() abort
 endfunction
 
 " add string to a buffer
-function s:AppendLines(to_append) abort
-  " set modifiable just in case
+function s:AddLines(to_append) abort
+  " set modifiable in case we are reusing a buffer
   setlocal modifiable
 
   " just delete the whole buffer
@@ -80,10 +91,10 @@ function s:HandleWindow(output) abort
       call s:InitBuffer()
     endif
 
-    call s:AppendLines(a:output)
+    call s:AddLines(a:output)
   else
     if win_gotoid(win_getid(l:win_buff_nr)) == 1
-      call s:AppendLines(a:output)
+      call s:AddLines(a:output)
 
     endif
   endif
@@ -99,7 +110,8 @@ function ctag_functions#FunctionSignatures(...) abort
     let l:output = s:MakeFunctionSignatures(expand('%'))
   endif
 
-  if a:1 == 'append'
+  if a:1 == 'read_into'
+    " read into the current buffer at the cursor
     call append(line('.'), l:output)
   else
     call s:HandleWindow(l:output)
