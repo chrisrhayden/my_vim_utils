@@ -8,15 +8,9 @@ let g:loaded_my_ctag_cmds = 1
 command -complete=file -nargs=* Signatures
       \ :call ctag_functions#FunctionSignatures('display', <f-args>)
 
-" read prototypes in to file
+" read prototypes in to the current buffer
 command -complete=file -nargs=* SignaturesRead
-      \ :call ctag_functions#FunctionSignatures('append', <f-args>)
-
-" add table of contents binding
-augroup CtagsUtils
-  autocmd!
-  autocmd! FileType cpp,c :nnoremap <buffer> gO :call ctag_functions#FunctionSignatures('display')<cr>
-augroup END
+      \ :call ctag_functions#FunctionSignatures('read_into', <f-args>)
 " }}}
 
 " vim: foldmethod=indent
